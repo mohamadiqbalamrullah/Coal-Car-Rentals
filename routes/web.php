@@ -15,6 +15,8 @@ use App\Http\Controllers\PagesController;
 use App\Http\Controllers\MiscellaneousController;
 use App\Http\Controllers\AuthenticationController;
 use App\Http\Controllers\ChartsController;
+use App\Http\Controllers\LoginController;
+use App\Http\Controllers\RentalController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,10 +28,18 @@ use App\Http\Controllers\ChartsController;
 | contains the "web" middleware group. Now create something great!
 |
 */
+// Login Logout
+Route::get('/', [LoginController::class, 'login'])->name('login');
+Route::post('/login', [LoginController::class, 'DoLogin'])->name('DoLogin');
+Route::post('/logout',[LoginController::class, 'logout'])->name('logout');
 
+Route::middleware('auth')->group(function () {
 // Main Page Route
-Route::get('/', [DashboardController::class, 'dashboardEcommerce'])->name('dashboard-ecommerce');
+Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashboard');
 
+//Car Rental
+Route::post('/rental/store', [RentalController::class, 'store'])->name('rental.store');
+});
 
 /* Route Dashboards */
 Route::group(['prefix' => 'dashboard'], function () {
