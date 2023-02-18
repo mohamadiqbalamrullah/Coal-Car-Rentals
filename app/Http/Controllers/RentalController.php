@@ -7,6 +7,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 class RentalController extends Controller
 {
+    
+    public function stakeholder($id)
+    {
+        // dd($id);
+        $data = Rental::where('id', $id)->update(['status' => 1]);
+        if($data){
+            return redirect()->route('dashboard')->with('success','Perizinan Telah Disetujui');
+        }
+        return redirect()->route('dashboard')->with('error', 'Periksa Kembali Data Yang Dipilih!');
+    }
+
+    public function engineer($id)
+    {
+        // dd($id);
+        $data = Rental::where('id', $id)->update(['status' => 2, 'is_active' => 1]);
+        if($data){
+            return redirect()->route('dashboard')->with('success','Perizinan Telah Disetujui');
+        }
+        return redirect()->route('dashboard')->with('error', 'Periksa Kembali Data Yang Dipilih!');
+    }
     /**
      * Display a listing of the resource.
      *
@@ -70,9 +90,11 @@ class RentalController extends Controller
      * @param  \App\Models\Rental  $rental
      * @return \Illuminate\Http\Response
      */
-    public function show(Rental $rental)
+    public function show(Rental $rental, $id, Request $request)
     {
-        //
+        $title = 'Detail Pengajuan Kendaraan';
+        $data = $rental->where('id', $id)->first();
+        return view('rental.detail', compact('title','data'));
     }
 
     /**

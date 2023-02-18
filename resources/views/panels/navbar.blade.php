@@ -49,54 +49,6 @@
 @endif
 <div class="navbar-container d-flex content">
   <ul class="nav navbar-nav align-items-center ms-auto">
-    <li class="nav-item dropdown dropdown-notification me-25">
-      <a class="nav-link" href="javascript:void(0);" data-bs-toggle="dropdown">
-        <i class="ficon" data-feather="bell"></i>
-        @if ($data->is_active == true)
-        <span class="badge rounded-pill bg-danger badge-up">New</span>
-        @endif
-      </a>
-      <ul class="dropdown-menu dropdown-menu-media dropdown-menu-end">
-        <li class="dropdown-menu-header">
-          <div class="dropdown-header d-flex">
-            <h4 class="notification-title mb-0 me-auto">Notifications</h4>
-            <div class="badge rounded-pill badge-light-primary">{{ $data->is_active == true ? 'New' : ''}}</div>
-          </div>
-        </li>
-        <li class="scrollable-container media-list">
-        @if ($data->is_active == true)
-        @foreach ($datas as $data)
-        <a class="d-flex" href="javascript:void(0)">
-          <div class="list-item d-flex align-items-start">
-            <div class="me-1">
-              <div class="avatar bg-light-success">
-                <div class="avatar-content"><i class="avatar-icon" data-feather="check"></i></div>
-              </div>
-            </div>
-            <div class="list-item-body flex-grow-1">
-              <p class="media-heading"><span class="fw-bolder">Kendaraan Telah Diterima Driver</span></p><small
-                class="notification-text">Kendaraan Diterima Oleh {{$data->driver}}</small>
-            </div>
-          </div>
-        </a>     
-        @endforeach    
-        @else
-        <a class="d-flex" href="javascript:void(0)">
-          <div class="list-item d-flex align-items-start">
-            <div class="me-1">
-              <div class="avatar bg-light-danger">
-                <div class="avatar-content"><i class="avatar-icon" data-feather="x"></i></div>
-              </div>
-            </div>
-            <div class="list-item-body flex-grow-1">
-              <p class="media-heading"><span class="fw-bolder">Belum Ada Informasi Perizinan</span></p>
-            </div>
-          </div>
-        </a>    
-        @endif
-        </li>
-      </ul>
-    </li>
     <li class="nav-item dropdown dropdown-user">
       <a class="nav-link dropdown-toggle dropdown-user-link" id="dropdown-user" href="javascript:void(0);"
         data-bs-toggle="dropdown" aria-haspopup="true">
@@ -114,11 +66,6 @@
       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdown-user">
         <h6 class="dropdown-header">Pengaturan Akun</h6>
         <div class="dropdown-divider"></div>
-        <a class="dropdown-item"
-          href="{{ Route::has('profile.show') ? route('user.detail',Auth::user()->id ) : 'javascript:void(0)' }}">
-          <i class="me-50" data-feather="user"></i> Detail Akun
-        </a>
-        
         @if (Auth::check())
           <a class="dropdown-item" href="{{ route('logout') }}"
             onclick="event.preventDefault(); document.getElementById('logout-form').submit();">

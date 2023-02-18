@@ -18,13 +18,18 @@ class DatabaseSeeder extends Seeder
     {
         User::insert([
             [
-                'name' => 'admin',
+                'name' => 'Admin',
                 'email' => 'admin@coal.com',
                 'password' => Hash::make('password')
             ],
             [
-                'name' => 'stakeholder',
-                'email' => 'stakeholer@coal.com',
+                'name' => 'Stakeholder',
+                'email' => 'stakeholder@coal.com',
+                'password' => Hash::make('password')
+            ],
+            [
+                'name' => 'Engineer',
+                'email' => 'engineer@coal.com',
                 'password' => Hash::make('password')
             ],
         ]);
