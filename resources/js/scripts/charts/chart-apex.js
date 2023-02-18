@@ -11,6 +11,12 @@
 
   // Line Chart
   // --------------------------------------------------------------------
+  let data = [];
+  const kendaraan = '$datas';
+  var i = 0;
+  while ( i < kendaraan.length+1){
+    data.push(kendaraan.jenis_kendaraan);
+  }
   var lineChartEl = document.querySelector('#line-chart'),
     lineChartConfig = {
       chart: {
@@ -26,7 +32,7 @@
       },
       series: [
         {
-          data: [280, 200, 220, 180, 270, 250, 70, 90, 200, 150, 160, 100, 150, 100, 50]
+          data: data
         }
       ],
       markers: {
@@ -65,21 +71,7 @@
       },
       xaxis: {
         categories: [
-          '7/12',
-          '8/12',
-          '9/12',
-          '10/12',
-          '11/12',
-          '12/12',
-          '13/12',
-          '14/12',
-          '15/12',
-          '16/12',
-          '17/12',
-          '18/12',
-          '19/12',
-          '20/12',
-          '21/12'
+        
         ]
       },
       yaxis: {
