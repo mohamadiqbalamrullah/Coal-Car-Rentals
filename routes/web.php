@@ -39,8 +39,10 @@ Route::get('/dashboard', [DashboardController::class, 'dashboard'])->name('dashb
 
 //Car Rental
 Route::post('/rental/store', [RentalController::class, 'store'])->name('rental.store');
-Route::get('/stakeholder/approvel/{id}', [RentalController::class, 'stakeholder'])->name('rental.stakeholder');
+Route::get('/stakeholder/approval/{id}', [RentalController::class, 'stakeholder'])->name('rental.stakeholder');
+Route::get('/stakeholder/decline/{id}', [RentalController::class, 'stakeholder_decline'])->name('rental.stakeholder_decline');
 Route::get('/engineer/approvel/{id}', [RentalController::class, 'engineer'])->name('rental.engineer');
+Route::get('/engineer/decline/{id}', [RentalController::class, 'engineer_decline'])->name('rental.engineer_decline');
 Route::get('/rental/detail/{id}', [RentalController::class, 'show'])->name('rental.detail');
 });
 

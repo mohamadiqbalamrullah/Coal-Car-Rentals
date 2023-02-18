@@ -30,12 +30,10 @@
           flex-sm-row flex-column
           justify-content-md-between
           align-items-start
-          justify-content-start
-        "
+          justify-content-start"
       >
         <div>
           <h4 class="card-title mb-25">Kuantitas Perizinan Kendaraan</h4>
-          {{-- <span class="card-subtitle text-muted">Kuantitas Perizinan Kendaraan</span> --}}
         </div>
       </div>
       <div class="card-body">
@@ -82,13 +80,17 @@
                             {{$data->penanggung_jawab}}  
                           </td>
                           <td>
-                          @if ($data->status == 0)
-                          <span class="badge bg-secondary">Verifikasi</span>
-                          @elseif($data->status == 1)
-                          <span class="badge bg-primary">Pengecekan Kendaraan</span>
-                          @else
-                          <span class="badge bg-success">Disetujui</span> 
-                          @endif    
+                            @if ($data->status == 0)
+                            <span class="badge bg-secondary">Verifikasi</span>
+                            @elseif($data->status == 1)
+                            <span class="badge bg-primary">Pengecekan Kendaraan</span>
+                            @elseif($data->status == -1)
+                            <span class="badge bg-danger">Ditolak</span>
+                            @elseif($data->status == -2)
+                            <span class="badge bg-danger">Kendaraan Tidak Layak</span>
+                            @else
+                            <span class="badge bg-success">Disetujui</span> 
+                            @endif     
                           </td>
                           <td>
                           @if ($data->is_active == 0)
@@ -161,9 +163,13 @@
                         <span class="badge bg-secondary">Verifikasi</span>
                         @elseif($data->status == 1)
                         <span class="badge bg-primary">Pengecekan Kendaraan</span>
+                        @elseif($data->status == -1)
+                        <span class="badge bg-danger">Ditolak</span>
+                        @elseif($data->status == -2)
+                        <span class="badge bg-danger">Kendaraan Tidak Layak</span>
                         @else
                         <span class="badge bg-success">Disetujui</span> 
-                        @endif    
+                        @endif     
                         </td>
                         <td>
                         @if ($data->is_active == 0)
@@ -173,8 +179,11 @@
                         @endif 
                         </td>
                         <td nowrap>
+                          <a class="btn btn-danger waves-effect waves-float waves-light" href="{{route ('rental.stakeholder_decline', $data->id)}}">
+                            <i data-feather='x-circle'></i>
+                          </a>
                           <a class="btn btn-success waves-effect waves-float waves-light" href="{{route ('rental.stakeholder', $data->id)}}">
-                            Setujui
+                            <i data-feather='check-circle'></i>
                           </a>
                         </td>
                     </tr>
@@ -229,6 +238,10 @@
                         <span class="badge bg-secondary">Verifikasi</span>
                         @elseif($data->status == 1)
                         <span class="badge bg-primary">Pengecekan Kendaraan</span>
+                        @elseif($data->status == -1)
+                        <span class="badge bg-danger">Ditolak</span>
+                        @elseif($data->status == -2)
+                        <span class="badge bg-danger">Kendaraan Tidak Layak</span>
                         @else
                         <span class="badge bg-success">Disetujui</span> 
                         @endif    
@@ -257,134 +270,145 @@
         <h1>Kenderaan Yang Akan Melalui Pengecekan</h1>
     </div>
     <div class="col-12">
-        <div class="card">
-            <table class="datatables-basic table">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Diajukan Oleh</th>
-                    <th>Keperluan</th>
-                    <th>Jenis Kendaraan</th>
-                    <th>Driver</th>
-                    <th>Penanggung Jawab</th>
-                    <th>Perizinan</th>
-                    <th>Kondisi</th>
+      <div class="card">
+          <table class="datatables-basic table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Diajukan Oleh</th>
+                  <th>Keperluan</th>
+                  <th>Jenis Kendaraan</th>
+                  <th>Driver</th>
+                  <th>Penanggung Jawab</th>
+                  <th>Perizinan</th>
+                  <th>Kondisi</th>
+                  <th>Action</th>
+                </tr>
+              </thead>
+              <tbody>
+                  @forelse ($datas as $data)
+                  <tr class="text-center">
+                      <td scope="row">
+                        {{$loop->iteration}}
+                      </td>
+                      <td>
+                        {{$data->created_by}}
+                      </td>
+                      <td>
+                        {{$data->keperluan}}
+                      </td>
+                      <td>
+                        {{$data->jenis_kendaraan}}
+                      </td>
+                      <td>
+                        {{$data->driver}}
+                      </td>
+                      <td>
+                        {{$data->penanggung_jawab}}  
+                      </td>
+                      <td>
+                      @if ($data->status == 0)
+                      <span class="badge bg-secondary">Verifikasi</span>
+                      @elseif($data->status == 1)
+                      <span class="badge bg-primary">Pengecekan Kendaraan</span>
+                      @elseif($data->status == -1)
+                      <span class="badge bg-danger">Ditolak</span>
+                      @elseif($data->status == -2)
+                      <span class="badge bg-danger">Kendaraan Tidak Layak</span>
+                      @else
+                      <span class="badge bg-success">Disetujui</span> 
+                      @endif     
+                      </td>
+                      <td>
+                      @if ($data->is_active == 0)
+                      <span class="badge bg-secondary">Parkir</span>
+                      @else
+                      <span class="badge bg-success">Ready</span>    
+                      @endif 
+                      </td>
+                      <td nowrap>
+                        <a class="btn btn-danger waves-effect waves-float waves-light" href="{{route ('rental.engineer_decline', $data->id)}}">
+                          <i data-feather='x-circle'></i>
+                        </a>
+                        <a class="btn btn-success waves-effect waves-float waves-light" href="{{route ('rental.engineer', $data->id)}}">
+                          <i data-feather='check-circle'></i>
+                        </a>
+                      </td>
                   </tr>
-                </thead>
-                <tbody>
-                    @forelse ($datas as $data)
-                    <tr class="text-center">
-                        <td scope="row">
-                          {{$loop->iteration}}
-                        </td>
-                        <td>
-                          {{$data->created_by}}
-                        </td>
-                        <td>
-                          {{$data->keperluan}}
-                        </td>
-                        <td>
-                          {{$data->jenis_kendaraan}}
-                        </td>
-                        <td>
-                          {{$data->driver}}
-                        </td>
-                        <td>
-                          {{$data->penanggung_jawab}}  
-                        </td>
-                        <td>
-                        @if ($data->status == 0)
-                        <span class="badge bg-secondary">Verifikasi</span>
-                        @elseif($data->status == 1)
-                        <span class="badge bg-primary">Pengecekan Kendaraan</span>
-                        @else
-                        <span class="badge bg-success">Disetujui</span> 
-                        @endif    
-                        </td>
-                        <td>
-                        @if ($data->is_active == 0)
-                        <span class="badge bg-secondary">Parkir</span>
-                        @else
-                        <span class="badge bg-success">Ready</span>    
-                        @endif 
-                        </td>
-                    </tr>
-                    @empty
-                        
-                    @endforelse
-                </tbody>
-              </table>
-        </div>
+                  @empty
+                      
+                  @endforelse
+              </tbody>
+            </table>
+      </div>
     </div>
     <div class="col-12">
         <h1>Data Yang Sudah Disetujui</h1>
     </div>
     <div class="col-12">
-        <div class="card">
-            <table class="datatables-basic table">
-                <thead>
-                  <tr>
-                    <th>No</th>
-                    <th>Diajukan Oleh</th>
-                    <th>Keperluan</th>
-                    <th>Jenis Kendaraan</th>
-                    <th>Driver</th>
-                    <th>Penanggung Jawab</th>
-                    <th>Perizinan</th>
-                    <th>Kondisi</th>
-                    <th>Action</th>
+      <div class="card">
+          <table class="datatables-basic table">
+              <thead>
+                <tr>
+                  <th>No</th>
+                  <th>Diajukan Oleh</th>
+                  <th>Keperluan</th>
+                  <th>Jenis Kendaraan</th>
+                  <th>Driver</th>
+                  <th>Penanggung Jawab</th>
+                  <th>Perizinan</th>
+                  <th>Kondisi</th>
+                </tr>
+              </thead>
+              <tbody>
+                  @forelse ($items as $data)
+                  <tr class="text-center">
+                      <td scope="row">
+                        {{$loop->iteration}}
+                      </td>
+                      <td>
+                        {{$data->created_by}}
+                      </td>
+                      <td>
+                        {{$data->keperluan}}
+                      </td>
+                      <td>
+                        {{$data->jenis_kendaraan}}
+                      </td>
+                      <td>
+                        {{$data->driver}}
+                      </td>
+                      <td>
+                        {{$data->penanggung_jawab}}  
+                      </td>
+                      <td>
+                      @if ($data->status == 0)
+                      <span class="badge bg-secondary">Verifikasi</span>
+                      @elseif($data->status == 1)
+                      <span class="badge bg-primary">Pengecekan Kendaraan</span>
+                      @elseif($data->status == -1)
+                      <span class="badge bg-danger">Ditolak</span>
+                      @elseif($data->status == -2)
+                      <span class="badge bg-danger">Kendaraan Tidak Layak</span>
+                      @else
+                      <span class="badge bg-success">Disetujui</span> 
+                      @endif    
+                      </td>
+                      <td>
+                      @if ($data->is_active == 0)
+                      <span class="badge bg-secondary">Parkir</span>
+                      @else
+                      <span class="badge bg-success">Ready</span>    
+                      @endif 
+                      </td>
                   </tr>
-                </thead>
-                <tbody>
-                    @forelse ($items as $data)
-                    <tr class="text-center">
-                        <td scope="row">
-                          {{$loop->iteration}}
-                        </td>
-                        <td>
-                          {{$data->created_by}}
-                        </td>
-                        <td>
-                          {{$data->keperluan}}
-                        </td>
-                        <td>
-                          {{$data->jenis_kendaraan}}
-                        </td>
-                        <td>
-                          {{$data->driver}}
-                        </td>
-                        <td>
-                          {{$data->penanggung_jawab}}  
-                        </td>
-                        <td>
-                        @if ($data->status == 0)
-                        <span class="badge bg-secondary">Verifikasi</span>
-                        @elseif($data->status == 1)
-                        <span class="badge bg-primary">Pengecekan Kendaraan</span>
-                        @else
-                        <span class="badge bg-success">Disetujui</span> 
-                        @endif    
-                        </td>
-                        <td>
-                        @if ($data->is_active == 0)
-                        <span class="badge bg-secondary">Parkir</span>
-                        @else
-                        <span class="badge bg-success">Ready</span>    
-                        @endif 
-                        </td>
-                        <td nowrap>
-                          <a class="btn btn-success waves-effect waves-float waves-light" href="{{route ('rental.engineer', $data->id)}}">
-                            Setujui
-                          </a>
-                        </td>
-                    </tr>
-                    @empty
-                        
-                    @endforelse
-                </tbody>
-              </table>
-        </div>
-    </div>
+                  @empty
+                      
+                  @endforelse
+              </tbody>
+            </table>
+      </div>
+  </div>
   </div>
 @endcan
 
@@ -431,6 +455,50 @@
       dom: '<"card-header border-bottom p-1"<"head-label"><"dt -action-buttons text-end"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       lengthMenu: [ 10, 25, 50, 75, 100],      
       buttons: [
+        {
+          extend: 'collection',
+          className: 'btn btn-outline-secondary dropdown-toggle me-2',
+          text: feather.icons['share'].toSvg({ class: 'font-small-4 me-50' }) + 'Export',
+          buttons: [
+            {
+              extend: 'print',
+              text: feather.icons['printer'].toSvg({ class: 'font-small-4 me-50' }) + 'Print',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'csv',
+              text: feather.icons['file-text'].toSvg({ class: 'font-small-4 me-50' }) + 'Csv',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'excel',
+              text: feather.icons['file'].toSvg({ class: 'font-small-4 me-50' }) + 'Excel',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'pdf',
+              text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 me-50' }) + 'Pdf',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'copy',
+              text: feather.icons['copy'].toSvg({ class: 'font-small-4 me-50' }) + 'Copy',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            }
+          ],
+          init: function (api, node, config) {
+            $(node).removeClass('btn-secondary');
+            $(node).parent().removeClass('btn-group');
+            setTimeout(function () {
+              $(node).closest('.dt-buttons').removeClass('btn-group').addClass('d-inline-flex');
+            }, 50);
+          }
+        },
       {
           text: feather.icons['plus'].toSvg({ class: 'me-50 font-small-4' }) + 'Ajukan Perizinan',
           className: 'create-new btn btn-primary',
@@ -494,6 +562,52 @@
     $('.datatables-basic').DataTable({
       dom: '<"card-header border-bottom p-1"<"head-label"><"dt -action-buttons text-end"B>><"d-flex justify-content-between align-items-center mx-0 row"<"col-sm-12 col-md-6"l><"col-sm-12 col-md-6"f>>t<"d-flex justify-content-between mx-0 row"<"col-sm-12 col-md-6"i><"col-sm-12 col-md-6"p>>',
       lengthMenu: [ 10, 25, 50, 75, 100],    
+      buttons: [
+        {
+          extend: 'collection',
+          className: 'btn btn-outline-secondary dropdown-toggle me-2',
+          text: feather.icons['share'].toSvg({ class: 'font-small-4 me-50' }) + 'Export',
+          buttons: [
+            {
+              extend: 'print',
+              text: feather.icons['printer'].toSvg({ class: 'font-small-4 me-50' }) + 'Print',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'csv',
+              text: feather.icons['file-text'].toSvg({ class: 'font-small-4 me-50' }) + 'Csv',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'excel',
+              text: feather.icons['file'].toSvg({ class: 'font-small-4 me-50' }) + 'Excel',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'pdf',
+              text: feather.icons['clipboard'].toSvg({ class: 'font-small-4 me-50' }) + 'Pdf',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            },
+            {
+              extend: 'copy',
+              text: feather.icons['copy'].toSvg({ class: 'font-small-4 me-50' }) + 'Copy',
+              className: 'dropdown-item',
+              exportOptions: { columns: [3, 4, 5, 6, 7] }
+            }
+          ],
+          init: function (api, node, config) {
+            $(node).removeClass('btn-secondary');
+            $(node).parent().removeClass('btn-group');
+            setTimeout(function () {
+              $(node).closest('.dt-buttons').removeClass('btn-group').addClass('d-inline-flex');
+            }, 50);
+          }
+        }
+      ],
       responsive: {
         details: {
           display: $.fn.dataTable.Responsive.display.modal({

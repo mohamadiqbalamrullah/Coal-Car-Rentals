@@ -32,7 +32,7 @@
       },
       series: [
         {
-          data: data
+          data: $('data')
         }
       ],
       markers: {

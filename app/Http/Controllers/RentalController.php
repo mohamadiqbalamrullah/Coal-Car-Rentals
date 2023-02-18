@@ -18,12 +18,32 @@ class RentalController extends Controller
         return redirect()->route('dashboard')->with('error', 'Periksa Kembali Data Yang Dipilih!');
     }
 
+    public function stakeholder_decline($id)
+    {
+        // dd($id);
+        $data = Rental::where('id', $id)->update(['status' => -1]);
+        if($data){
+            return redirect()->route('dashboard')->with('success','Perizinan Berhasil Ditolak');
+        }
+        return redirect()->route('dashboard')->with('error', 'Periksa Kembali Data Yang Dipilih!');
+    }
+
     public function engineer($id)
     {
         // dd($id);
         $data = Rental::where('id', $id)->update(['status' => 2, 'is_active' => 1]);
         if($data){
             return redirect()->route('dashboard')->with('success','Perizinan Telah Disetujui');
+        }
+        return redirect()->route('dashboard')->with('error', 'Periksa Kembali Data Yang Dipilih!');
+    }
+
+    public function engineer_decline($id)
+    {
+        // dd($id);
+        $data = Rental::where('id', $id)->update(['status' => -2]);
+        if($data){
+            return redirect()->route('dashboard')->with('success','Kondisi Kendaraan Berhasil Diperbarui');
         }
         return redirect()->route('dashboard')->with('error', 'Periksa Kembali Data Yang Dipilih!');
     }
